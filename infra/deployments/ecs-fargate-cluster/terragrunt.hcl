@@ -1,7 +1,7 @@
 # deployments/ecs-fargate-cluster/terragrunt.hcl
 
 include {
-  path = find_in_parent_folders("root.hcl")
+  path = find_in_parent_folders()
 }
 
 locals {
