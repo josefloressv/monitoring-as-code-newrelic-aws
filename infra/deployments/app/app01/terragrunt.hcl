@@ -23,10 +23,10 @@ inputs = {
     "Name" : "${local.app_name}-${local.common_vars.environment}",
     "Language" : "nodejs",
   }
-  task_cpu_architecture = "X86_64" # "ARM64"
+  task_cpu_architecture = "ARM64" # "ARM64", X86_64
 
   # Container definition
-  container_name       = "nodejs"
+  container_name       = "${local.app_name}-${local.common_vars.environment}"
   container_image_name = "${local.app_name}-${local.common_vars.environment}"
   container_port       = "3000"
 
@@ -39,7 +39,7 @@ inputs = {
 
   # Target group and listener
   tg_name               = "tg-${local.app_name}-${local.common_vars.environment}"
-  listener_context_path = "/app01/*"
+  listener_context_path = "/app01*"
   tg_health_check_path  = "/app01/health"
   tg_tags = {
     "Name" : "tg-${local.app_name}-${local.common_vars.environment}"
