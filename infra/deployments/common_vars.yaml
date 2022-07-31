@@ -1,0 +1,6 @@
+aws_account_id: "838127195462"
+aws_region: "us-east-1"
+environment: "dev"
+base_tags:
+  Environment: "dev"
+  Terraform: "1.2.6"
