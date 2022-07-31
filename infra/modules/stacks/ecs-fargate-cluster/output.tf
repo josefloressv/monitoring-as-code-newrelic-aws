@@ -7,10 +7,18 @@ output "fargate-vpc-subnets-id" {
 }
 
 output "fargate-cluster-name" {
+  value = aws_ecs_cluster.fargate-cluster.name
+}
+
+output "fargate-cluster-arn" {
   value = aws_ecs_cluster.fargate-cluster.id
 }
 
-output "fargate-alb" {
+output "fargate-alb-name" {
+  value = "${aws_lb.fargate-alb.name}"
+}
+
+output "fargate-alb-url" {
   value = "http://${aws_lb.fargate-alb.dns_name}"
 }
 
