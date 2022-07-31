@@ -33,58 +33,6 @@ resource "aws_ecs_task_definition" "base" {
   )
 }
 
-resource "aws_lb_target_group" "tg-app" {
-  name        = var.tg_name
-  target_type = "ip"
-  vpc_id      = var.aws_vpc_id
-  port        = var.tg_port
-  protocol    = "HTTP"
-  health_check {
-    path                = var.tg_health_check_path
-    healthy_threshold   = 2
-    unhealthy_threshold = 10
-    timeout             = 60
-    interval            = 300
-    matcher             = "200,301,302"
-  }
-
-  tags = merge(
-    local.tags,
-    var.tg_tags
-  )
-}
-
-data "aws_lb" "selected" {
-  name = var.tg_alb_name
-}
-
-data "aws_lb_listener" "selected80" {
-  load_balancer_arn = data.aws_lb.selected.arn
-  port              = var.tg_port
-}
-
-resource "aws_lb_listener_rule" "lr-rule" {
-  listener_arn = data.aws_lb_listener.selected80.arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.tg-app.arn
-  }
-
-  condition {
-    path_pattern {
-      values = [var.listener_context_path]
-    }
-  }
-}
-
-data "aws_subnets" "all" {
-  filter {
-    name   = "vpc-id"
-    values = [var.aws_vpc_id]
-  }
-}
-
 resource "aws_ecs_service" "service" {
   name            = var.service_name
   cluster         = var.cluster_name
@@ -112,35 +60,10 @@ resource "aws_ecs_service" "service" {
 
 }
 
-resource "aws_ecr_repository" "ecr-app" {
-  name                 = var.ecr_repo_name
-  image_tag_mutability = var.ecr_repo_tag_mutability
-  tags = merge(
-    local.tags,
-    var.ecr_repo_tags
-  )
+data "aws_subnets" "all" {
+  filter {
+    name   = "vpc-id"
+    values = [var.aws_vpc_id]
+  }
 }
 
-resource "aws_ecr_lifecycle_policy" "ecr-app-policy" {
-  repository = aws_ecr_repository.ecr-app.name
-
-  policy = <<EOF
-{
-    "rules": [
-        {
-            "rulePriority": 1,
-            "description": "${var.ecr_repo_policy_description}",
-            "selection": {
-                "tagStatus": "untagged",
-                "countType": "sinceImagePushed",
-                "countUnit": "days",
-                "countNumber": ${var.ecr_repo_policy_expiration_days}
-            },
-            "action": {
-                "type": "expire"
-            }
-        }
-    ]
-}
-EOF
-}
