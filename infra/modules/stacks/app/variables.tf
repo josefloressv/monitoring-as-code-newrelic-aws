@@ -73,7 +73,7 @@ variable "service_name" {
   description = "The name of the service"
 }
 
-variable "cluser_name" {
+variable "cluster_name" {
   type        = string
   description = "The name of the cluster"
 }
@@ -81,11 +81,6 @@ variable "cluser_name" {
 variable "service_desired_count" {
   type        = number
   description = "The number of tasks to run"
-}
-
-variable "service_subnets" {
-  type        = list(string)
-  description = "The subnets to use for the service"
 }
 
 variable "service_sg_ids" {
@@ -114,9 +109,9 @@ variable "tg_health_check_path" {
   description = "The path to use for the target group"
 }
 
-variable "tg_alb_arn" {
+variable "tg_alb_name" {
   type        = string
-  description = "The task group arn to use for the service"
+  description = "The name of the ALB"
 }
 
 variable "tg_tags" {
@@ -125,11 +120,6 @@ variable "tg_tags" {
 }
 
 # Listener
-variable "listener_arn" {
-  type        = string
-  description = "The listener arn to use for the service"
-}
-
 variable "listener_context_path" {
   type        = string
   description = "The context path to use for the listener"

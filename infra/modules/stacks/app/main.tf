@@ -1,5 +1,21 @@
-data "aws_iam_role" "ecs_task_execution_role" {
+resource "aws_iam_role" "ecs_task_execution_role" {
   name = "ecsTaskExecutionRole"
+ 
+  assume_role_policy = <<EOF
+{
+ "Version": "2012-10-17",
+ "Statement": [
+   {
+     "Action": "sts:AssumeRole",
+     "Principal": {
+       "Service": "ecs-tasks.amazonaws.com"
+     },
+     "Effect": "Allow",
+     "Sid": ""
+   }
+ ]
+}
+EOF
 }
 
 resource "aws_ecs_task_definition" "base" {
@@ -8,7 +24,7 @@ resource "aws_ecs_task_definition" "base" {
   network_mode             = "awsvpc"
   cpu                      = var.task_cpu
   memory                   = var.task_memory
-  execution_role_arn       = data.aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn       = aws_iam_role.ecs_task_execution_role.arn
 
   container_definitions = jsonencode([
     {
@@ -37,7 +53,6 @@ resource "aws_ecs_task_definition" "base" {
   )
 }
 
-
 resource "aws_lb_target_group" "tg-app" {
   name        = var.tg_name
   target_type = "ip"
@@ -59,8 +74,17 @@ resource "aws_lb_target_group" "tg-app" {
   )
 }
 
+data "aws_lb" "selected" {
+  name = var.tg_alb_name
+}
+
+data "aws_lb_listener" "selected80" {
+  load_balancer_arn = data.aws_lb.selected.arn
+  port              = var.tg_port
+}
+
 resource "aws_lb_listener_rule" "lr-rule" {
-  listener_arn = var.listener_arn
+  listener_arn = data.aws_lb_listener.selected80.arn
 
   action {
     type             = "forward"
@@ -74,9 +98,16 @@ resource "aws_lb_listener_rule" "lr-rule" {
   }
 }
 
+data "aws_subnets" "all" {
+  filter {
+    name   = "vpc-id"
+    values = [var.aws_vpc_id]
+  }
+}
+
 resource "aws_ecs_service" "service" {
   name            = var.service_name
-  cluster         = var.cluser_name
+  cluster         = var.cluster_name
   task_definition = aws_ecs_task_definition.base.arn
   desired_count   = var.service_desired_count
 
@@ -94,46 +125,12 @@ resource "aws_ecs_service" "service" {
   launch_type = "FARGATE"
 
   network_configuration {
-    subnets          = var.service_subnets
+    subnets          = data.aws_subnets.all.ids
     security_groups  = var.service_sg_ids
     assign_public_ip = true
   }
 
 }
-
-resource "aws_ecr_repository" "ecr-app" {
-  name                 = var.ecr_repo_name
-  image_tag_mutability = var.ecr_repo_tag_mutability
-  tags = merge(
-    local.tags,
-    var.ecr_repo_tags
-  )
-}
-
-resource "aws_ecr_lifecycle_policy" "ecr-app-policy" {
-  repository = aws_ecr_repository.ecr-app.name
-
-  policy = <<EOF
-{
-    "rules": [
-        {
-            "rulePriority": 1,
-            "description": "${var.ecr_repo_policy_description}",
-            "selection": {
-                "tagStatus": "untagged",
-                "countType": "sinceImagePushed",
-                "countUnit": "days",
-                "countNumber": ${var.ecr_repo_policy_expiration_days}
-            },
-            "action": {
-                "type": "expire"
-            }
-        }
-    ]
-}
-EOF
-}
-
 
 resource "aws_ecr_repository" "ecr-app" {
   name                 = var.ecr_repo_name
