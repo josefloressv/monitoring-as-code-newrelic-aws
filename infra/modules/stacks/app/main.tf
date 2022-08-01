@@ -19,6 +19,14 @@ resource "aws_ecs_task_definition" "base" {
           hostPort      = var.container_port
         }
       ]
+      logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+              awslogs-group = "/aws/ecs/${var.cluster_name}"
+              awslogs-region = var.aws_region
+              awslogs-stream-prefix = var.service_name
+          }
+      }      
     }
   ])
 
