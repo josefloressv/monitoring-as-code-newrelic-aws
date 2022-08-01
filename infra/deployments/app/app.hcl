@@ -10,7 +10,6 @@ dependencies {
 
 inputs = {
   # General
-  aws_account_id = local.common_vars.aws_account_id
   aws_region     = local.common_vars.aws_region
   aws_vpc_id     = trimspace(run_cmd("terragrunt", "output", "--raw", "fargate-vpc-id", "--terragrunt-working-dir", "${get_parent_terragrunt_dir()}/../ecs-fargate-cluster"))
   base_tags      = local.common_vars.base_tags

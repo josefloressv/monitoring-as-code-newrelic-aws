@@ -9,7 +9,7 @@ resource "aws_ecs_task_definition" "base" {
   container_definitions = jsonencode([
     {
       name      = var.container_name
-      image     = local.image
+      image     = "${data.aws_caller_identity.current.account_id}.dkr.ecr.${var.aws_region}.amazonaws.com/${var.container_image_name}:latest"
       cpu       = var.container_cpu
       essential = true
       portMappings = [
@@ -74,4 +74,6 @@ data "aws_subnets" "all" {
     values = [var.aws_vpc_id]
   }
 }
+
+data "aws_caller_identity" "current" {}
 
