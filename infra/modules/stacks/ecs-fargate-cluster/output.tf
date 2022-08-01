@@ -15,7 +15,7 @@ output "fargate-cluster-arn" {
 }
 
 output "fargate-alb-name" {
-  value = "${aws_lb.fargate-alb.name}"
+  value = aws_lb.fargate-alb.name
 }
 
 output "fargate-alb-url" {

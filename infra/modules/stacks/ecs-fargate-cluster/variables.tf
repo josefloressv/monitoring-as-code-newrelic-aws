@@ -15,6 +15,11 @@ variable "cluster_tags" {
   description = "The tags for the cluster"
 }
 
+variable "cloudwatch_retention_in_days" {
+  type        = number
+  description = "The retention in days of CloudWatch logs"
+}
+
 # VPC
 variable "vpc_name" {
   type        = string

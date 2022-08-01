@@ -11,8 +11,9 @@ locals {
 
 inputs = {
   # Cluster
-  cluster_name = "cluster-app-${local.common_vars.environment}"
-  base_tags    = local.common_vars.base_tags
+  cluster_name                 = "cluster-app-${local.common_vars.environment}"
+  base_tags                    = local.common_vars.base_tags
+  cloudwatch_retention_in_days = 7
   cluster_tags = {
     Name = "cluster-app-${local.common_vars.environment}"
   }
