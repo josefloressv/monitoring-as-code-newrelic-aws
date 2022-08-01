@@ -1,4 +1,8 @@
 # General
+variable "aws_region" {
+  type = string
+}
+
 variable "base_tags" {
   type        = map(string)
   description = "The base tags for the stack"

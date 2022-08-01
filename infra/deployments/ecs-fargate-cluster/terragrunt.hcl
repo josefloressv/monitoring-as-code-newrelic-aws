@@ -10,6 +10,9 @@ locals {
 }
 
 inputs = {
+  # General
+  aws_region     = local.common_vars.aws_region
+
   # Cluster
   cluster_name                 = "cluster-app-${local.common_vars.environment}"
   base_tags                    = local.common_vars.base_tags
