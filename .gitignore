@@ -36,3 +36,9 @@ override.tf.json
 
 # Terragrunt
 .terragrunt-cache
+
+# Desktop Services_Store) A macOS file that is created by Finder in every folder to hold the user's folder view preferences
+.DS_Store
+
+# NodeJs
+node_modules
