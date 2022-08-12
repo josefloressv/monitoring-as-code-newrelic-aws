@@ -42,9 +42,14 @@ jobs:
     - name: Terragrunt plan
       run: |
         cd infra/deployments/ecs-fargate-cluster
-        terragrunt plan -out out.tfplan
+        terragrunt plan -out terraform.tfplan
 
+    - uses: actions/upload-artifact@v3
+      with:
+        name: Uploading Artifact
+        path: infra/deployments/ecs-fargate-cluster/terraform.tfplan
+        
     - name: Terragrunt apply
       run: |
         cd infra/deployments/ecs-fargate-cluster
-        terragrunt apply out.tfplan
+        terragrunt apply terraform.tfplan
