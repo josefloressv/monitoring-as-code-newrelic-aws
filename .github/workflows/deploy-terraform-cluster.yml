@@ -47,7 +47,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: Uploading Artifact
-        path: ./infra/deployments/ecs-fargate-cluster/terraform.tfplan
+        path: ${{ env.GITHUB_WORKSPACE }}/infra/deployments/ecs-fargate-cluster/terraform.tfplan
         
     - name: Terragrunt apply
       run: |
