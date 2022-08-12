@@ -2,13 +2,21 @@
 # 
 # To use this workflow, you must configure the following GHA Secrets:
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION
-# and then run the workflow from the UI.
+#
+# and then run the workflow from the UI or just change the code in specific places
+# see below the path filters
 # 
 
-name: Provision ECS cluster (TG Manual)
+name: Provision ECS cluster
 on:
-  workflow_dispatch
-
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - infra/deployments/ecs-fargate-cluster/*
+      - infra/modules/ecs-fargate-cluster/*
+      - .github/workflows/deploy-terraform-cluster.yml
 env:
   AWS_DEFAULT_REGION: us-east-1
 
@@ -47,7 +55,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: Uploading Artifact
-        path: ${{ env.GITHUB_WORKSPACE }}/infra/deployments/ecs-fargate-cluster/.terragrunt-cache/**/terraform.tfplan
+        path: infra/deployments/ecs-fargate-cluster/.terragrunt-cache/**/terraform.tfplan
         
     - name: Terragrunt apply
       run: |
