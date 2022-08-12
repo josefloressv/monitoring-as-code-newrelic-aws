@@ -41,8 +41,10 @@ jobs:
 
     - name: Terragrunt plan
       run: |
+        cd infra/deployments/ecs-fargate-cluster
         terragrunt plan -out out.tfplan
 
     - name: Terragrunt apply
       run: |
+        cd infra/deployments/ecs-fargate-cluster
         terragrunt apply out.tfplan
