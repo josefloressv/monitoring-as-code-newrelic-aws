@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: dev
     env:
-      S3_BUCKET_NAME: goweb-terraform-state-bucket
+      S3_BUCKET_NAME: goweb-terraform-state-bucket2
 
     steps:
     - name: Configure AWS Credentials
