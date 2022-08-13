@@ -7,7 +7,7 @@
 # see below the path filters
 # 
 
-name: S3 Bucket for TF
+name: 01 S3 Bucket for TF
 on:
   workflow_dispatch:
   push:
