@@ -1,0 +1,48 @@
+# This Workflow is used to deploy the App NodeJS. 
+# 
+# To use this workflow, you must configure the following GHA Secrets:
+# AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_ACCOUNT_NUMBER
+#
+# and then run the workflow from the UI
+# 
+
+name: 04 NodeJS app
+on:
+  workflow_dispatch:
+
+env:
+  AWS_DEFAULT_REGION: us-east-1
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+    - name: ECR Login
+      run: |
+        docker login --username AWS --password $(aws ecr get-login-password --region ${{ env.AWS_DEFAULT_REGION }}) ${{ secrets.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com
+
+    - name: Build
+      run: |
+        cd app
+        docker build -t app01-dev .
+
+    - name: Tag
+      run: |
+        docker tag app01-dev:latest ${{ secrets.AWS_ACCOUNT_NUMBER }}.dkr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
+
+    - name: Push
+      run: |
+        docker push ${{ secrets.AWS_ACCOUNT_NUMBER }}.dkr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
