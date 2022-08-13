@@ -46,7 +46,7 @@ jobs:
     - name: Terragrunt init
       run: |
         cd infra/deployments/ecs-fargate-cluster
-        terragrunt init -reconfigure
+        terragrunt init --terragrunt-non-interactive
 
     - name: Terragrunt plan
       run: |
