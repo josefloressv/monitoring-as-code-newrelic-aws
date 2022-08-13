@@ -55,7 +55,7 @@ jobs:
 
     - uses: actions/upload-artifact@v3
       with:
-        name: Uploading Artifact
+        name: terraform-plan
         path: infra/deployments/ecs-fargate-cluster/.terragrunt-cache/**/terraform.tfplan
         
     - name: Terragrunt apply
