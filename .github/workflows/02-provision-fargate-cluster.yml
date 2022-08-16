@@ -9,6 +9,7 @@
 
 name: 02 ECS Fargate cluster
 on:
+  workflow_call:
   workflow_dispatch:
   push:
     branches:

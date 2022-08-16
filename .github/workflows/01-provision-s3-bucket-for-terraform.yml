@@ -9,6 +9,7 @@
 
 name: 01 S3 Bucket for TF
 on:
+  workflow_call:
   workflow_dispatch:
   push:
     branches:

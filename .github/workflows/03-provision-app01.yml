@@ -13,6 +13,7 @@
 
 name: 03 App01 Infrastructure
 on:
+  workflow_call:
   workflow_dispatch:
 
 env:
