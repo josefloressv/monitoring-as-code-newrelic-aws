@@ -50,7 +50,7 @@ jobs:
 
     - name: Tag
       run: |
-        docker tag app01-dev:latest ${{ secrets.AWS_ACCOUNT_NUMBER }}.dkr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
+        docker tag app01-dev:latest ${{ secrets.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
 
     - name: Push
       run: |
