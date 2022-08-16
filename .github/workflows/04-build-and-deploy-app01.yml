@@ -14,7 +14,7 @@ on:
         description: 'Define Service name'     
         required: true
         type: string
-        default: 'app01-app-dev'
+        default: 'app01-dev'
       clusterName:
         description: 'Cluster name'
         required: true
@@ -34,7 +34,7 @@ on:
         description: 'Define Service name'     
         required: true
         type: string
-        default: 'app01-app-dev'
+        default: 'app01-dev'
       clusterName:
         description: 'Cluster name'
         required: true
