@@ -16,7 +16,7 @@ env:
 jobs:
   provision-s3-bucket:
     name: Provision s3 bucket
-    uses: ./.github/workflows/01-provision-s3-bucket.yml
+    uses: ./.github/workflows/01-provision-s3-bucket-for-terraform.yml
 
   provision-fargate-cluster:
     name: Provision Fargate cluster
@@ -28,5 +28,5 @@ jobs:
 
   deploy-app01:
     name: Deploying app01 NodeJs
-    uses: ./.github/workflows/04-deploy-app01.yml
+    uses: ./.github/workflows/04-build-and-deploy-app01.yml
 
