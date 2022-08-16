@@ -23,7 +23,7 @@ inputs = {
     "Name" : "${local.app_name}-${local.common_vars.environment}",
     "Language" : "nodejs",
   }
-  task_cpu_architecture = "ARM64" # "ARM64", X86_64
+  task_cpu_architecture = "X86_64" # "ARM64", X86_64
 
   # Container definition
   container_name       = "${local.app_name}-${local.common_vars.environment}"
