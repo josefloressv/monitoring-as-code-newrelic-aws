@@ -9,7 +9,17 @@
 name: 00 Entire Infra Provisioning
 on:
   workflow_dispatch:
-
+    inputs:
+      serviceName:
+        description: 'Define Service name'     
+        required: true
+        type: string
+        default: 'app01-dev'
+      clusterName:
+        description: 'Cluster name'
+        required: true
+        type: string
+        default: 'cluster-app-dev'
 env:
   AWS_DEFAULT_REGION: us-east-1
 
@@ -42,6 +52,9 @@ jobs:
     name: Deploying app01 NodeJs
     needs: provision-infra-app01
     uses: ./.github/workflows/04-build-and-deploy-app01.yml
+    with:
+      serviceName: ${{ inputs.serviceName }}
+      clusterName: ${{ inputs.clusterName }}
     secrets:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

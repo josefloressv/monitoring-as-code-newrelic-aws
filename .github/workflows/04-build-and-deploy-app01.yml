@@ -9,6 +9,17 @@
 name: 04 NodeJS app
 on:
   workflow_call:
+    inputs:
+      serviceName:
+        description: 'Define Service name'     
+        required: true
+        type: string
+        default: 'app01-app-dev'
+      clusterName:
+        description: 'Cluster name'
+        required: true
+        type: string
+        default: 'cluster-app-dev'  
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
@@ -19,8 +30,8 @@ on:
 
   workflow_dispatch:
     inputs:
-      appName:
-        description: 'Define env name'     
+      serviceName:
+        description: 'Define Service name'     
         required: true
         type: string
         default: 'app01-app-dev'
@@ -69,5 +80,5 @@ jobs:
 
     - name: Create ECS deployment
       run: |
-        aws ecs update-service --service ${{ inputs.appName }} --cluster ${{ inputs.clusterName }} --desired-count 2 --force-new-deployment
+        aws ecs update-service --service ${{ inputs.serviceName }} --cluster ${{ inputs.clusterName }} --desired-count 2 --force-new-deployment
 
