@@ -10,6 +10,11 @@
 name: 01 S3 Bucket for TF
 on:
   workflow_call:
+    secrets:
+      - AWS_ACCESS_KEY_ID
+      - AWS_SECRET_ACCESS_KEY
+      - AWS_ACCOUNT_NUMBER
+
   workflow_dispatch:
   push:
     branches:

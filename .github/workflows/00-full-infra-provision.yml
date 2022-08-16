@@ -17,6 +17,10 @@ jobs:
   provision-s3-bucket:
     name: Provision s3 bucket
     uses: ./.github/workflows/01-provision-s3-bucket-for-terraform.yml
+    with:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_ACCOUNT_NUMBER: ${{ secrets.AWS_ACCOUNT_NUMBER }}
 
   provision-fargate-cluster:
     name: Provision Fargate cluster
