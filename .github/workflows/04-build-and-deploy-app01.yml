@@ -19,16 +19,6 @@ on:
         description: 'Environment'     
         required: true
         type: string
-      serviceName:
-        description: 'Define Service name'     
-        required: true
-        type: string
-        default: 'app01-dev'
-      clusterName:
-        description: 'Cluster name'
-        required: true
-        type: string
-        default: 'cluster-app-dev'  
 
   workflow_dispatch:
     inputs:
@@ -36,18 +26,11 @@ on:
         description: 'Environment'     
         required: true
         type: environment
-      serviceName:
-        description: 'Define Service name'     
-        required: true
-        type: string
-        default: 'app01-dev'
-      clusterName:
-        description: 'Cluster name'
-        required: true
-        type: string
-        default: 'cluster-app-dev'
+
 env:
   AWS_DEFAULT_REGION: us-east-1
+  CLUSTER_NAME: cluster-app-${{ inputs.environment }}
+  SERVICE_NAME: app01-${{ inputs.environment }}
 
 jobs:
   deploy:
@@ -89,5 +72,5 @@ jobs:
 
     - name: Create ECS deployment
       run: |
-        aws ecs update-service --service ${{ inputs.serviceName }} --cluster ${{ inputs.clusterName }} --desired-count 2 --force-new-deployment
+        aws ecs update-service --service ${{ var.SERVICE_NAME }} --cluster ${{ var.CLUSTER_NAME }} --desired-count 2 --force-new-deployment
 

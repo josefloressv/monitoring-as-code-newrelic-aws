@@ -2,6 +2,7 @@
 # 
 # To use this workflow, you must configure the following GHA Secrets:
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+# in two environments: dev and prod
 #
 # and then run the workflow from the UI
 # 
