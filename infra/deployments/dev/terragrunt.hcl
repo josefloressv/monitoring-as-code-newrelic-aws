@@ -11,7 +11,7 @@ locals {
 # Default the stack each deployment deploys based on its directory structure
 # Can be overridden by redefining this block in a child terragrunt.hcl
 terraform {
-  source = "${local.root_deployments_dir}/../modules/stacks/${local.stack_name}///"
+  source = "${local.root_deployments_dir}/../../modules/stacks/${local.stack_name}///"
 }
 
 remote_state {
