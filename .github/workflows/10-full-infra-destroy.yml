@@ -10,7 +10,7 @@
 # and then run the workflow from the UI 
 # 
 
-name: 10 Destroy Full Infrastructure
+name: 10 Destroy Dev Infrastructure
 on:
 
   workflow_dispatch:
@@ -44,17 +44,17 @@ jobs:
 
     - name: Destroy NR setup
       run: |
-        cd infra/deployments/${{ inputs.environment }}/newrelic-setup
+        cd infra/deployments/dev/newrelic-setup
         terragrunt destroy -auto-approve
 
     - name: Destroy App01
       run: |
-        cd infra/deployments/${{ inputs.environment }}/app/app01
+        cd infra/deployments/dev/app/app01
         terragrunt destroy -auto-approve
 
     - name: Destroy Fargate Cluster
       run: |
-        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
+        cd infra/deployments/dev/ecs-fargate-cluster/
         terragrunt destroy -auto-approve
 
     - name: Destroy Tfstate S3 Bucket
