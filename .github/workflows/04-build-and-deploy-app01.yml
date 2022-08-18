@@ -60,7 +60,7 @@ jobs:
     - name: Build
       run: |
         cd app
-        docker build -t app01-${{ inputs.environment }} --build-arg NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }}.
+        docker build -t app01-${{ inputs.environment }} --build-arg NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} .
 
     - name: Tag
       run: |
