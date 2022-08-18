@@ -30,7 +30,7 @@ inputs = {
   service_desired_count = 2
 
   # Target group and listener defaults
-  tg_alb_name = "alb-app-dev"
+  tg_alb_name = "alb-app-${local.common_vars.environment}"
   tg_port     = "80"
 
   # ECR defaults

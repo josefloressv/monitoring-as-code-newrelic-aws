@@ -11,13 +11,13 @@ locals {
 # Default the stack each deployment deploys based on its directory structure
 # Can be overridden by redefining this block in a child terragrunt.hcl
 terraform {
-  source = "${local.root_deployments_dir}/../modules/stacks/${local.stack_name}///"
+  source = "${local.root_deployments_dir}/../../modules/stacks/${local.stack_name}///"
 }
 
 remote_state {
   backend = "s3"
   config = {
-    bucket = "goweb-terraform-state-bucket2"
+    bucket = "goweb-terraform-state-bucket-${local.common_vars.environment}"
     key    = "${local.stack_name}/${local.component}-terraform.tfstate" # ${path_relative_to_include()}/terraform.tfstate
     region = local.common_vars.aws_region
     encrypt = true

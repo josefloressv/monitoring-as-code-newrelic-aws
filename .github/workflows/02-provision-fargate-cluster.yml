@@ -2,6 +2,7 @@
 # 
 # To use this workflow, you must configure the following GHA Secrets:
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+# in two environments: dev and prod
 #
 # and then run the workflow from the UI or just change the code in specific places
 # see below the path filters
@@ -15,16 +16,28 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: string
 
   workflow_dispatch:
-  push:
-    branches:
-      - main
-    paths:
-      - infra/deployments/ecs-fargate-cluster/*
-      - infra/modules/ecs-fargate-cluster/*
-      - .github/workflows/02-provision-fargate-cluster.yml
-      - '!**.md'
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: environment
+
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - infra/deployments/ecs-fargate-cluster/*
+#      - infra/modules/ecs-fargate-cluster/*
+#      - .github/workflows/02-provision-fargate-cluster.yml
+#      - '!**.md'
+
 env:
   AWS_DEFAULT_REGION: us-east-1
 
@@ -32,7 +45,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout
@@ -52,20 +65,20 @@ jobs:
 
     - name: Terragrunt init
       run: |
-        cd infra/deployments/ecs-fargate-cluster
+        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
         terragrunt init --terragrunt-non-interactive
 
     - name: Terragrunt plan
       run: |
-        cd infra/deployments/ecs-fargate-cluster
+        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
         terragrunt plan -out terraform.tfplan
 
     - uses: actions/upload-artifact@v3
       with:
         name: terraform-plan
-        path: infra/deployments/ecs-fargate-cluster/.terragrunt-cache/**/terraform.tfplan
+        path: infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/.terragrunt-cache/**/terraform.tfplan
         
     - name: Terragrunt apply
       run: |
-        cd infra/deployments/ecs-fargate-cluster
+        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
         terragrunt apply terraform.tfplan

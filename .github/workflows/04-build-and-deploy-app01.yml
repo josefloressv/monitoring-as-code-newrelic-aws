@@ -2,6 +2,7 @@
 # 
 # To use this workflow, you must configure the following GHA Secrets:
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+# in two environments: dev and prod
 #
 # and then run the workflow from the UI
 # 
@@ -9,43 +10,34 @@
 name: 04 NodeJS app
 on:
   workflow_call:
-    inputs:
-      serviceName:
-        description: 'Define Service name'     
-        required: true
-        type: string
-        default: 'app01-dev'
-      clusterName:
-        description: 'Cluster name'
-        required: true
-        type: string
-        default: 'cluster-app-dev'  
     secrets:
       AWS_ACCESS_KEY_ID:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: string
 
   workflow_dispatch:
     inputs:
-      serviceName:
-        description: 'Define Service name'     
+      environment:
+        description: 'Environment'     
         required: true
-        type: string
-        default: 'app01-dev'
-      clusterName:
-        description: 'Cluster name'
-        required: true
-        type: string
-        default: 'cluster-app-dev'
+        type: environment
+
 env:
   AWS_DEFAULT_REGION: us-east-1
+  CLUSTER_NAME: cluster-app-${{ inputs.environment }}
+  SERVICE_NAME: app01-${{ inputs.environment }}
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout
@@ -69,17 +61,17 @@ jobs:
       run: |
         cd app
         npm install
-        docker build -t app01-dev .
+        docker build -t app01-${{ inputs.environment }} .
 
     - name: Tag
       run: |
-        docker tag app01-dev:latest ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
+        docker tag app01-${{ inputs.environment }}:latest ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-${{ inputs.environment }}:latest
 
     - name: Push
       run: |
-        docker push ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
+        docker push ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-${{ inputs.environment }}:latest
 
     - name: Create ECS deployment
       run: |
-        aws ecs update-service --service ${{ inputs.serviceName }} --cluster ${{ inputs.clusterName }} --desired-count 2 --force-new-deployment
+        aws ecs update-service --service ${{ env.SERVICE_NAME }} --cluster ${{ env.CLUSTER_NAME }} --desired-count 2 --force-new-deployment
 
