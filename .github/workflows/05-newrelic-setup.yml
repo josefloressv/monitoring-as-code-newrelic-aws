@@ -1,8 +1,5 @@
 # This Workflow is used to porovision a the resources for new relic setup:
-# - ecr repository
-# - task definition
-# - service
-# - LB listener for the Target Group
+# - IAM role required for new relic wizard setup
 #
 # To use this workflow, you must configure the following GHA Secrets:
 # AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
@@ -11,7 +8,7 @@
 # see below the path filters
 # 
 
-name: 03 App01 Infrastructure
+name: 05 New Relic Setup
 on:
   workflow_call:
     secrets:
@@ -19,9 +16,18 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: string
 
   workflow_dispatch:
-
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: environment
 env:
   AWS_DEFAULT_REGION: us-east-1
 
@@ -29,7 +35,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout
@@ -49,20 +55,20 @@ jobs:
 
     - name: Terragrunt init
       run: |
-        cd infra/deployments/app/app01
+        cd infra/deployments/${{ inputs.environment }}/newrelic-setup
         terragrunt init --terragrunt-non-interactive
 
     - name: Terragrunt plan
       run: |
-        cd infra/deployments/app/app01
+        cd infra/deployments/${{ inputs.environment }}/newrelic-setup
         terragrunt plan -out terraform.tfplan
 
     - uses: actions/upload-artifact@v3
       with:
         name: terraform-plan
-        path: infra/deployments/app/app01/.terragrunt-cache/**/terraform.tfplan
+        path: infra/deployments/${{ inputs.environment }}/newrelic-setup/.terragrunt-cache/**/terraform.tfplan
         
     - name: Terragrunt apply
       run: |
-        cd infra/deployments/app/app01
+        cd infra/deployments/${{ inputs.environment }}/newrelic-setup
         terragrunt apply terraform.tfplan
