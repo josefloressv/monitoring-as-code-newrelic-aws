@@ -17,7 +17,7 @@ terraform {
 remote_state {
   backend = "s3"
   config = {
-    bucket = "goweb-terraform-state-bucket2"
+    bucket = "goweb-terraform-state-bucket-${local.environment}"
     key    = "${local.stack_name}/${local.component}-terraform.tfstate" # ${path_relative_to_include()}/terraform.tfstate
     region = local.common_vars.aws_region
     encrypt = true

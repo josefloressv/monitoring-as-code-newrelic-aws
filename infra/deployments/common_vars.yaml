@@ -1,5 +1,5 @@
 aws_region: "us-east-1"
-environment: "dev"
+environment: "prod"
 base_tags:
-  Environment: "dev"
+  Environment: "prod"
   Terraform: "1.2.6"
