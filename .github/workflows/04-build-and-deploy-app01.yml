@@ -77,15 +77,15 @@ jobs:
       run: |
         cd app
         npm install
-        docker build -t app01-dev .
+        docker build -t app01-${{ inputs.environment }} .
 
     - name: Tag
       run: |
-        docker tag app01-dev:latest ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
+        docker tag app01-${{ inputs.environment }}:latest ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-${{ inputs.environment }}:latest
 
     - name: Push
       run: |
-        docker push ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-dev:latest
+        docker push ${{ env.AWS_ACCOUNT_NUMBER }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/app01-${{ inputs.environment }}:latest
 
     - name: Create ECS deployment
       run: |
