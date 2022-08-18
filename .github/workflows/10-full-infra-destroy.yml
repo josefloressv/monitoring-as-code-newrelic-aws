@@ -49,6 +49,7 @@ jobs:
 
     - name: Destroy App01
       run: |
+        aws ecr delete-repository --repository-name app01-dev --force
         cd infra/deployments/dev/app/app01
         terragrunt destroy -auto-approve
 
