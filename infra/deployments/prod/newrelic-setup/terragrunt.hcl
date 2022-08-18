@@ -16,7 +16,7 @@ inputs = {
   base_tags               = local.common_vars.base_tags
   aws_nerelic_role_name   = "NewRelicInfrastructure-Integrations"
   newrelic_aws_account_id = 754728514883
-  newrelic_external_id    = 491442
+  newrelic_external_id    = 3588847
 
   # New Relic Agent role
   aws_nragent_role_name   = "NewRelicECSIntegration"

@@ -64,38 +64,10 @@ Solution:
 I was pushing to an ECR that does not created yet. I fixed
 docker tag app01-dev:latest 265967435636.dkr.ecr.us-east-1.amazonaws.com/app01-dev:latest
 
-01
+GHA Remote state S3 bucket goweb-terraform-state-bucket is out of date. Would you like Terragrunt to update it? (y/n) time=2022-08-13T03:33:07Z level=error msg=EOF
+time=2022-08-13T03:33:07Z level=error msg=Unable to determine underlying exit code, so Terragrunt will exit with error code 1
+Error: Process completed with exit code 1.
 
-export AWS_ACCESS_KEY_ID=AKIAY4IEYKSXTLYFR5V4
-export AWS_SECRET_ACCESS_KEY=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
-export AWS_DEFAULT_REGION=us-east-1
-
-02
-cd ecs-fargate-cluster
-terragrunt init -reconfigure
-terragrunt plan -out out.tfplan
-terragrunt apply out.tfplan
-
-03
-cd ../app/app01
-terragrunt init -reconfigure
-terragrunt plan -out out.tfplan
-terragrunt apply out.tfplan
-
-04 app
-
-docker login --username AWS --password $(aws ecr get-login-password --region us-east-1) 265967435636.dkr.ecr.us-east-1.amazonaws.com
-docker build -t app01-dev .
-docker tag app01-dev:latest 265967435636.dkr.ecr.us-east-1.amazonaws.com/nodeapp:latest
-docker push 265967435636.dkr.ecr.us-east-1.amazonaws.com/nodeapp:latest
-
-
-docker build -t app01-dev .
-docker tag app01-dev:latest 265967435636.dkr.ecr.us-east-1.amazonaws.com/app01-dev:latest
-docker push 265967435636.dkr.ecr.us-east-1.amazonaws.com/app01-dev:latest
-
-others
-terragrunt hclfmt
-terraform fmt
-terragrunt output
-terragrunt apply -auto-approve
+Solution:
+terragrunt init --terragrunt-non-interactive
+https://davidbegin.github.io/terragrunt/terragrunt_details/cli-options.html
