@@ -1,3 +1,4 @@
+require('newrelic');
 const express = require("express");
 const app = express();
 
@@ -24,7 +25,7 @@ app.get("/app01/dashboard", (req, res) => {
 });
 
 app.listen(3000, () => {
-  console.log("App listening on port 3000!");
+  console.log(getTimestampLog() +" App listening on port 3000!");
 });
 
 function getTimestampLog() {
