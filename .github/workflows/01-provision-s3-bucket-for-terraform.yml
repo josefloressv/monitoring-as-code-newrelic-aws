@@ -15,8 +15,20 @@ on:
         required: true
       AWS_SECRET_ACCESS_KEY:
         required: true
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: string
+
 
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: environment
+
   push:
     branches:
       - main
@@ -29,7 +41,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
     env:
       S3_BUCKET_NAME: goweb-terraform-state-bucket2
 

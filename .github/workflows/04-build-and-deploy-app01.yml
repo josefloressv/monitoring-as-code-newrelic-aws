@@ -9,7 +9,16 @@
 name: 04 NodeJS app
 on:
   workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
     inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: string
       serviceName:
         description: 'Define Service name'     
         required: true
@@ -20,14 +29,13 @@ on:
         required: true
         type: string
         default: 'cluster-app-dev'  
-    secrets:
-      AWS_ACCESS_KEY_ID:
-        required: true
-      AWS_SECRET_ACCESS_KEY:
-        required: true
 
   workflow_dispatch:
     inputs:
+      environment:
+        description: 'Environment'     
+        required: true
+        type: environment
       serviceName:
         description: 'Define Service name'     
         required: true
@@ -45,7 +53,7 @@ jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    environment: dev
+    environment: ${{ inputs.environment }}
 
     steps:
     - name: Checkout
