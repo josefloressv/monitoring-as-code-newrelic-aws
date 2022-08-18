@@ -72,5 +72,5 @@ jobs:
 
     - name: Create ECS deployment
       run: |
-        aws ecs update-service --service ${{ var.SERVICE_NAME }} --cluster ${{ var.CLUSTER_NAME }} --desired-count 2 --force-new-deployment
+        aws ecs update-service --service ${{ env.SERVICE_NAME }} --cluster ${{ env.CLUSTER_NAME }} --desired-count 2 --force-new-deployment
 
