@@ -65,20 +65,20 @@ jobs:
 
     - name: Terragrunt init
       run: |
-        cd infra/deployments/ecs-fargate-cluster/${{ inputs.environment }}
+        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
         terragrunt init --terragrunt-non-interactive
 
     - name: Terragrunt plan
       run: |
-        cd infra/deployments/ecs-fargate-cluster/${{ inputs.environment }}
+        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
         terragrunt plan -out terraform.tfplan
 
     - uses: actions/upload-artifact@v3
       with:
         name: terraform-plan
-        path: infra/deployments/ecs-fargate-cluster/${{ inputs.environment }}/.terragrunt-cache/**/terraform.tfplan
+        path: infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/.terragrunt-cache/**/terraform.tfplan
         
     - name: Terragrunt apply
       run: |
-        cd infra/deployments/ecs-fargate-cluster/${{ inputs.environment }}
+        cd infra/deployments/${{ inputs.environment }}/ecs-fargate-cluster/
         terragrunt apply terraform.tfplan
