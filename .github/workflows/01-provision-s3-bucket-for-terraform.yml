@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: ${{ inputs.environment }}
     env:
-      S3_BUCKET_NAME: goweb-terraform-state-bucket2
+      S3_BUCKET_NAME: goweb-terraform-state-bucket-${{ inputs.environment }}
 
     steps:
     - name: Configure AWS Credentials
