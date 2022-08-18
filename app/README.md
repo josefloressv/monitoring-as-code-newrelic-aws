@@ -28,9 +28,10 @@ docker tag josefloressv/nodeapp:latest josefloressv/nodeapp:v1.0
 docker push josefloressv/nodeapp:v1.0
 
 #AWS ECR
+docker build -t app01-dev .
 docker login --username AWS --password $(aws ecr get-login-password --region us-east-1) [AWS_ACCOUNT_NUMBER].dkr.ecr.[AWS_REGION].amazonaws.com
-docker tag josefloressv/nodeapp:latest [AWS_ACCOUNT_NUMBER].dkr.ecr.[AWS_REGION].amazonaws.com/nodeapp:v1.0
-docker push [AWS_ACCOUNT_NUMBER].dkr.ecr.[AWS_REGION].amazonaws.com/nodeapp:v1.0
+docker tag josefloressv/nodeapp:latest [AWS_ACCOUNT_NUMBER].dkr.ecr.[AWS_REGION].amazonaws.com/nodeapp:latest
+docker push [AWS_ACCOUNT_NUMBER].dkr.ecr.[AWS_REGION].amazonaws.com/nodeapp:latest
 ```
 
 ...
