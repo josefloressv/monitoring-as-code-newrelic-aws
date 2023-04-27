@@ -12,7 +12,7 @@ app.get("/app01", (req, res) => {
 });
 
 app.get("/app01/cncf", (req, res) => {  
-  res.send("Hola Jobsity!");
+  res.send("Hola Comunidad CNCF!");
 });
 
 app.get("/app01/health", (req, res) => {
