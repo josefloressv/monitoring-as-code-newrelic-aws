@@ -7,7 +7,7 @@
 # and then run the workflow from the UI
 # 
 
-name: 04 NodeJS app
+name: Pull Request App
 on:
   pull_request:
     branches:
