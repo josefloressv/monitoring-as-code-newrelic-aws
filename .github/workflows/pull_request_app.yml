@@ -7,7 +7,7 @@
 # and then run the workflow from the UI
 # 
 
-name: 04 NodeJS app
+name: Pull Request App
 on:
   pull_request:
     branches:
@@ -23,7 +23,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy
+    name: Validate PR
     runs-on: ubuntu-latest
     environment: dev
 
@@ -42,3 +42,8 @@ jobs:
       run: |
         cd app
         docker build -t app01-dev --build-arg NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} .
+
+    - name: Run tests
+      run: |
+        echo "Running tests...."
+  
