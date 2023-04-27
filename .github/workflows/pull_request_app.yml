@@ -42,3 +42,8 @@ jobs:
       run: |
         cd app
         docker build -t app01-dev --build-arg NEW_RELIC_LICENSE_KEY=${{ secrets.NEW_RELIC_LICENSE_KEY }} .
+
+    - name: Run tests
+      run: |
+        echo "Running tests...."
+  
