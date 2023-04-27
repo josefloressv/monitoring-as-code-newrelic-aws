@@ -15,6 +15,10 @@ app.get("/app01/cncf", (req, res) => {
   res.send("Hola Comunidad CNCF!");
 });
 
+app.get("/app01/jobsity", (req, res) => {  
+  res.send("Hello Jobsity!");
+});
+
 app.get("/app01/health", (req, res) => {
   res.send("UP");
 });
