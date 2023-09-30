@@ -61,7 +61,7 @@ jobs:
     - name: Setup Terragrunt
       uses: autero1/action-terragrunt@v1.1.0
       with:
-        terragrunt_version: latest
+        terragrunt_version: 0.45.0
 
     - name: Terragrunt init
       run: |
