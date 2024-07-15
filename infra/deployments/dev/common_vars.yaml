@@ -2,4 +2,5 @@ aws_region: "us-east-1"
 environment: "dev"
 base_tags:
   Environment: "dev"
-  Terraform: "1.4.0"
+  Terraform: "v1.8.4"
+  Terragrunt: "v0.54.20"
