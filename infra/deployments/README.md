@@ -1,9 +1,13 @@
 # Deployment
+## Requirements
+* Terraform v1.8.4
+* Terragrunt v0.54.20
 
 Provision AWS S3 bucket:
 
 ```sh
 aws s3api create-bucket --bucket goweb-terraform-state-bucket
+aws s3api put-bucket-versioning --bucket goweb-terraform-state-bucket --versioning-configuration Status=Enabled
 #replace the bucket name in terragrunt.hcl
 
 ```
@@ -66,9 +70,9 @@ docker tag app01-dev:latest 265967435636.dkr.ecr.us-east-1.amazonaws.com/app01-d
 
 01
 
-export AWS_ACCESS_KEY_ID=AKIAY4IEYKSXTLYFR5V4
-export AWS_SECRET_ACCESS_KEY=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
-export AWS_DEFAULT_REGION=us-east-1
+export AWS_ACCESS_KEY_ID=xxx
+export AWS_SECRET_ACCESS_KEY=xxxx
+export AWS_DEFAULT_REGION=us-west-2
 
 02
 cd ecs-fargate-cluster

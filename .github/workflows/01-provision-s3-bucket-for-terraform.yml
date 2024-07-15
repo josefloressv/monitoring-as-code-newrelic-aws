@@ -61,8 +61,10 @@ jobs:
     - name: S3 bucket encryption
       run: |
         aws s3api put-bucket-encryption \
-        --bucket ${{env.S3_BUCKET_NAME}} \
-        --server-side-encryption-configuration '{"Rules": [{"ApplyServerSideEncryptionByDefault": {"SSEAlgorithm": "AES256"}}]}'
+        --bucket ${{env.S3_BUCKET_NAME}}
 
+        aws s3api put-bucket-versioning \
+        --bucket ${{env.S3_BUCKET_NAME}} \
+        --versioning-configuration Status=Enabled
     - name: S3 bucket listing
       run: aws s3 ls
